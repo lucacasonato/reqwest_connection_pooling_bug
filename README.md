@@ -2,12 +2,12 @@ This demonstrates an issue with connection pooling in reqwest on HTTP/2 that
 results in following error:
 
 ```
-thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: reqwest::Error { kind: Request, url: Url { scheme: "https", cannot_be_a_base: false, username: "", password: None, host: Some(Domain("deno-website2.now.sh")), port: None, path: "/", query: None, fragment: None }, source: hyper::Error(Http2, Error { kind: Proto(NO_ERROR) }) }', src/main.rs:23:14
-```
+error sending request for url (https://deno-website2.now.sh/): http2 error: protocol error: not a result of an error
+``
 
 This repo contains two examples of the same code. One written in Go using the
 net/http std lib, and one using reqwest w/ rustls on a single threaded tokio
-event loop. Both examples spawn 100 concurrent tasks, each doing 20 requests to
+event loop. Both examples start 100 concurrent goroutines/futures, each doing 20 requests to
 https://deno-website2.now.sh/ in series.
 
 To run the working Go example:
@@ -21,7 +21,7 @@ To run the reqwest example:
 
 ```
 $ cd reqwest
-$ cargo run --features pool
+$ cargo run
 ```
 
 If instead you create a single client per connection (no connection pooling) you
@@ -29,5 +29,5 @@ do not experience this issue:
 
 ```
 $ cd reqwest
-$ cargo run
+$ cargo run --features no-pool
 ```
