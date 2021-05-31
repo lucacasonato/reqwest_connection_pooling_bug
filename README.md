@@ -21,5 +21,13 @@ To run the reqwest example:
 
 ```
 $ cd reqwest
+$ cargo run --features pool
+```
+
+If instead you create a single client per connection (no connection pooling) you
+do not experience this issue:
+
+```
+$ cd reqwest
 $ cargo run
 ```
