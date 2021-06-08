@@ -3,7 +3,7 @@ results in following error:
 
 ```
 error sending request for url (https://deno-website2.now.sh/): http2 error: protocol error: not a result of an error
-``
+```
 
 This repo contains two examples of the same code. One written in Go using the
 net/http std lib, and one using reqwest w/ rustls on a single threaded tokio
