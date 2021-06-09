@@ -2,9 +2,16 @@ use std::borrow::Cow;
 
 use futures::StreamExt;
 use reqwest::Client;
+use tracing::Level;
+use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::DEBUG) // Or `Level::TRACE` for even more detail.
+        .finish();
+    tracing::subscriber::set_global_default(subscriber).unwrap();
+
     #[cfg(not(feature = "no-pool"))]
     let client = Client::new();
 
@@ -20,10 +27,10 @@ async fn main() {
         futures.push(loop_(i, client));
     }
 
-    while let Some(_) = futures.next().await {}
+    futures.collect().await
 }
 
-async fn loop_<'a>(i: usize, client: Cow<'a, Client>) {
+async fn loop_(i: usize, client: Cow<'_, Client>) {
     for _ in 0..20 {
         client
             .get("https://deno-website2.now.sh/")
