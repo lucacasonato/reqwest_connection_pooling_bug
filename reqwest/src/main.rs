@@ -27,10 +27,10 @@ async fn main() {
         futures.push(loop_(i, client));
     }
 
-    while let Some(_) = futures.next().await {}
+    futures.collect().await
 }
 
-async fn loop_<'a>(i: usize, client: Cow<'a, Client>) {
+async fn loop_(i: usize, client: Cow<'_, Client>) {
     for _ in 0..20 {
         client
             .get("https://deno-website2.now.sh/")
