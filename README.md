@@ -1,3 +1,7 @@
+The issue has been solved. Thanks [@seanmonstar](https://github.com/seanmonstar)! <3
+
+---
+
 This demonstrates an issue with connection pooling in reqwest on HTTP/2 that
 results in following error:
 
